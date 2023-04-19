@@ -4,15 +4,27 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
 
 @Entity
-public class ProductEntity {
+//@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String productName;
 
-    public ProductEntity() {
+    public Product() { }
+
+    public Product(Long id, String productName) {
+        this.id = id;
+        this.productName = productName;
     }
 
     public Long getId() {
@@ -21,11 +33,6 @@ public class ProductEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ProductEntity(Long id, String productName) {
-        this.id = id;
-        this.productName = productName;
     }
 
     public String getProductName() {

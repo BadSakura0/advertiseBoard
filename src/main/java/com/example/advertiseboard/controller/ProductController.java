@@ -1,15 +1,18 @@
 package com.example.advertiseboard.controller;
 
-import com.example.advertiseboard.entity.ProductEntity;
+import com.example.advertiseboard.entity.Product;
 import com.example.advertiseboard.exception.ProductAlreadyExistException;
 import com.example.advertiseboard.exception.ProductNotFoundException;
+import com.example.advertiseboard.model.ProductCreateRequest;
 import com.example.advertiseboard.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 
 public class ProductController {
 
@@ -17,9 +20,9 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity addProduct(@RequestBody ProductEntity product) {
+    public ResponseEntity addProduct(@RequestBody ProductCreateRequest productCreateRequest) {
         try {
-            productService.addProduct(product);
+            productService.addProduct(productCreateRequest);
             return  ResponseEntity.ok("Продукт добавлен");
         } catch (ProductAlreadyExistException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -28,10 +31,10 @@ public class ProductController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity getOneProduct(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity getById(@PathVariable Long id) {
         try {
-            return  ResponseEntity.ok(productService.getOne(id));
+            return  ResponseEntity.ok(productService.getById(id));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
@@ -39,7 +42,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/list")
+    @GetMapping("/")
     public ResponseEntity getProducts() {
         try {
             return ResponseEntity.ok(productService.getList());

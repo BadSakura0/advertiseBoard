@@ -1,47 +1,50 @@
 package com.example.advertiseboard.service;
 
-import com.example.advertiseboard.entity.ProductEntity;
+import com.example.advertiseboard.entity.Product;
 import com.example.advertiseboard.exception.ProductAlreadyExistException;
 import com.example.advertiseboard.exception.ProductNotFoundException;
-import com.example.advertiseboard.model.Product;
-import com.example.advertiseboard.repository.ProductRepo;
+import com.example.advertiseboard.map.ProductMapper;
+import com.example.advertiseboard.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductService {
 
     @Autowired
-    private ProductRepo productRepo;
+    private ProductRepository productRepository;
 
-    public ProductEntity addProduct(ProductEntity product) throws ProductAlreadyExistException {
-        if(productRepo.findByProductName(product.getProductName()) != null) {
+
+    public void addProduct(com.example.advertiseboard.model.ProductCreateRequest productCreateRequest) throws ProductAlreadyExistException {
+        if(productRepository.findByProductName(productCreateRequest.getName()) != null) {
             throw new ProductAlreadyExistException("Такой продукт уже существует");
         }
-        return productRepo.save(product);
+        var newProduct = new Product();
+        //newProduct.setProductName(productCreateRequest.getName());
+        newProduct = ProductMapper.INSTANCE.ProductCreateRequestToProduct(productCreateRequest);
+        productRepository.save(newProduct);
     }
 
-    public Product getOne(Long id) throws ProductNotFoundException {
-        ProductEntity product = productRepo.findById(id).get();
-        if(productRepo.findById(id).get() == null) {
+    public com.example.advertiseboard.model.Product getById(Long id) throws ProductNotFoundException {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()) {
             throw new ProductNotFoundException("Продукт не найден");
         }
-        return Product.toModel(product);
+        return com.example.advertiseboard.model.Product.toModel(product.get());
     }
 
     public Long delete(Long id) throws ProductNotFoundException {
-        if(productRepo.findById(id).get() == null) {
+        if(productRepository.findById(id).isEmpty()) {
             throw new ProductNotFoundException("Продукт не найден");
-        } else productRepo.deleteById(id);
+        } else productRepository.deleteById(id);
         return id;
     }
 
-    public List<ProductEntity> getList() {
-        List<ProductEntity> productEntity = new ArrayList<>();
-        productRepo.findAll().forEach(productEntity::add);
-        return productEntity;
+    public Iterable<Product> getList() {
+        return productRepository.findAll();
     }
 }
