@@ -2,17 +2,14 @@ package com.example.advertiseboard.map;
 
 import com.example.advertiseboard.entity.Product;
 import com.example.advertiseboard.model.ProductCreateRequest;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    //@Mapping(target = "id", source = "productCreateRequest.id")
     @Mapping(target = "productName", source = "productCreateRequest.name")
     Product ProductCreateRequestToProduct(ProductCreateRequest productCreateRequest);
 

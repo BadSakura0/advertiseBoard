@@ -1,6 +1,5 @@
 package com.example.advertiseboard.controller;
 
-import com.example.advertiseboard.entity.Product;
 import com.example.advertiseboard.exception.ProductAlreadyExistException;
 import com.example.advertiseboard.exception.ProductNotFoundException;
 import com.example.advertiseboard.model.ProductCreateRequest;
@@ -8,8 +7,6 @@ import com.example.advertiseboard.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")

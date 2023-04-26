@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Entity
 @Table(name = "product")
