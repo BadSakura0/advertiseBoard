@@ -22,13 +22,19 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    private final ProductMapper productMapper;
+
+    public ProductService() {
+        this.productMapper = ProductMapper.INSTANCE;
+    }
+
 
     public void addProduct(ProductCreateRequest productCreateRequest, Long categoryId) throws ProductAlreadyExistException {
         if (productRepository.findByProductName(productCreateRequest.getName()) != null) {
             throw new ProductAlreadyExistException("Такой продукт уже существует");
         }
         var newProduct = new Product();
-        newProduct = ProductMapper.INSTANCE.productCreateRequestToProduct(productCreateRequest);
+        newProduct = productMapper.productCreateRequestToProduct(productCreateRequest);
         Category category = categoryRepository.findById(categoryId).get();
         newProduct.setCategory(category);
         productRepository.save(newProduct);
@@ -39,7 +45,7 @@ public class ProductService {
         if (product.isEmpty()) {
             throw new ProductNotFoundException("Продукт не найден");
         }
-        return ProductMapper.INSTANCE.productToModel(product.get());
+        return productMapper.productToModel(product.get());
     }
 
     public Long delete(Long id) throws ProductNotFoundException {
