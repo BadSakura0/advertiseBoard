@@ -11,10 +11,10 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     @Mapping(target = "productName", source = "productCreateRequest.name")
-    Product ProductCreateRequestToProduct(ProductCreateRequest productCreateRequest);
+    Product productCreateRequestToProduct(ProductCreateRequest productCreateRequest);
 
 
     @Mapping(target = "name", source = "product.productName")
-    com.example.advertiseboard.model.Product ProductToModel(Product product);
+    com.example.advertiseboard.model.Product productToModel(Product product);
 
 }

@@ -11,11 +11,6 @@ import lombok.Setter;
 public class Product {
 
     private String name;
-    private String description;
+    //private String description;
 
-    public static Product toModel(com.example.advertiseboard.entity.Product entity) {
-        Product model = new Product();
-        model = ProductMapper.INSTANCE.ProductToModel(entity);
-        return model;
-    }
 }

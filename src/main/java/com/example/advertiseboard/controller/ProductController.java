@@ -17,10 +17,10 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity addProduct(@RequestBody ProductCreateRequest productCreateRequest) {
+    public ResponseEntity addProduct(@RequestBody ProductCreateRequest productCreateRequest, @RequestParam Long categoryId) {
         try {
-            productService.addProduct(productCreateRequest);
-            return  ResponseEntity.ok("Продукт добавлен");
+            productService.addProduct(productCreateRequest, categoryId);
+            return ResponseEntity.ok("Продукт добавлен");
         } catch (ProductAlreadyExistException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
@@ -31,7 +31,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id) {
         try {
-            return  ResponseEntity.ok(productService.getById(id));
+            return ResponseEntity.ok(productService.getById(id));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class ProductController {
     @GetMapping("/")
     public ResponseEntity getProducts() {
         try {
-            return ResponseEntity.ok(productService.getList());
+            return ResponseEntity.ok(productService.getProducts());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка получения продукта");
         }
@@ -51,7 +51,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteProduct(@PathVariable Long id) {
         try {
-            return  ResponseEntity.ok(productService.delete(id));
+            return ResponseEntity.ok(productService.delete(id));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
